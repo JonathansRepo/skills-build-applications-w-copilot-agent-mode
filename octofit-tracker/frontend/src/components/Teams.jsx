@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
-const getApiBaseUrl = () => {
+const getApiUrl = () => {
   const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
   return codespaceName
-    ? `https://${codespaceName}-8000.app.github.dev`
-    : 'http://localhost:8000';
+    ? `https://${codespaceName}-8000.app.github.dev/api/teams`
+    : 'http://localhost:8000/api/teams';
 };
 
 function Teams() {
@@ -17,7 +17,7 @@ function Teams() {
 
     async function fetchTeams() {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/teams/`, {
+        const response = await fetch(getApiUrl(), {
           signal: controller.signal
         });
 

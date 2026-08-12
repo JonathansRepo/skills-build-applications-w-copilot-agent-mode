@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
-const getApiBaseUrl = () => {
+const getApiUrl = () => {
   const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
   return codespaceName
-    ? `https://${codespaceName}-8000.app.github.dev`
-    : 'http://localhost:8000';
+    ? `https://${codespaceName}-8000.app.github.dev/api/activities`
+    : 'http://localhost:8000/api/activities';
 };
 
 function Activities() {
@@ -17,7 +17,7 @@ function Activities() {
 
     async function fetchActivities() {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/activities/`, {
+        const response = await fetch(getApiUrl(), {
           signal: controller.signal
         });
 
