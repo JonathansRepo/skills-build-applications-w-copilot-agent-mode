@@ -1,122 +1,72 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
+import Activities from './components/Activities.jsx';
+import Leaderboard from './components/Leaderboard.jsx';
+import Teams from './components/Teams.jsx';
+import Users from './components/Users.jsx';
+import Workouts from './components/Workouts.jsx';
+
+const navItems = [
+  { to: '/users', label: 'Users' },
+  { to: '/teams', label: 'Teams' },
+  { to: '/activities', label: 'Activities' },
+  { to: '/workouts', label: 'Workouts' },
+  { to: '/leaderboard', label: 'Leaderboard' }
+];
 
 function App() {
-  const [count, setCount] = useState(0)
+  const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+  const apiBaseUrl = codespaceName
+    ? `https://${codespaceName}-8000.app.github.dev`
+    : 'http://localhost:8000';
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="container-fluid py-4 px-3 px-lg-5">
+      <div className="row">
+        <div className="col-12">
+          <div className="card shadow-sm border-0 mb-4">
+            <div className="card-body">
+              <h1 className="h3 mb-2">Octofit Tracker</h1>
+              <p className="mb-2 text-secondary">
+                API host: <strong>{apiBaseUrl}</strong>
+              </p>
+              <p className="mb-0 small text-muted">
+                Define <code>VITE_CODESPACE_NAME</code> in <code>.env.local</code> to enable the
+                Codespaces URL. If it is not set, the app falls back to localhost.
+              </p>
+            </div>
+          </div>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </div>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      <nav className="navbar navbar-expand-lg navbar-light bg-white rounded shadow-sm mb-4 border">
+        <div className="container-fluid">
+          <span className="navbar-brand mb-0 h5">Navigation</span>
+          <div className="navbar-nav d-flex flex-row flex-wrap gap-2">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  `nav-link px-3 py-2 rounded ${isActive ? 'bg-primary text-white' : 'text-dark'}`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      </nav>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <Routes>
+        <Route path="/" element={<Navigate to="/users" replace />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/teams" element={<Teams />} />
+        <Route path="/activities" element={<Activities />} />
+        <Route path="/workouts" element={<Workouts />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
